@@ -29,4 +29,4 @@ Those are the also the default settings set in the script, I suggest thing those
 6. When the processing finishes, save your file and use it for printing. Your layer exposure, wait times, number of bottom layers, etc. will not be changed.
 
 ## Example results
-...
+[Visit the Wiki section for result comparison](https://github.com/b005t3r/UVtools-GaussianLayerMerger/wiki/Example-results)
