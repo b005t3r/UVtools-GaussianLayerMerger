@@ -1,8 +1,8 @@
 # UVtools-GaussianLayerMerger
-A script for UVtools that reduces stepping/print lines by merging multiple thin layers (e.g. 10um) into a single thicker layer (e.g. 40um).
+A script for [UVtools](https://github.com/sn4k3/UVtools) that reduces stepping/print lines by merging multiple thin layers (e.g. 10um) into a single thicker layer (e.g. 40um).
 
 ## What is it?
-It’s a UVtools script for processing slice files used in resin 3D printing. It lets you slice at a much lower layer height (normally unprintable or very difficult to print) and merge those slices into a single, thicker layer, while preserving the detail of the thinner layers. This reduces common printing artifacts like print lines or stepping.
+It’s a [UVtools](https://github.com/sn4k3/UVtools) script for processing slice files used in resin 3D printing. It lets you slice at a much lower layer height (normally unprintable or very difficult to print) and merge those slices into a single, thicker layer, while preserving the detail of the thinner layers. This reduces common printing artifacts like print lines or stepping.
 
 ## How does it work?
 It works very similarly to standard XY anti-aliasing, but here it’s applied along the Z-axis - thinner layers are stacked on top of each other and merged into a single thicker layer, while preserving the details of the thin layers. This creates a gradient that fills in the gaps between thicker layers, making them much smoother.
@@ -10,7 +10,7 @@ It works very similarly to standard XY anti-aliasing, but here it’s applied al
 ## How do I use it?
 1. Produce the slices as you normally would (don’t change the settings you usually use for your target layer height) BUT slice at a lower layer height. (e.g., if you normally print at 40um, keep your slicer settings for 40um layers and ONLY change the layer height to, say, 10um).
 
-2. Open your output file in UVtools.
+2. Open your output file in [UVtools](https://github.com/sn4k3/UVtools).
 
 3. Optional, but makes things much faster for smaller prints - set ROI to model volume:
 
