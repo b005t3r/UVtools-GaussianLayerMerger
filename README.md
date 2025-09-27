@@ -24,7 +24,7 @@ It works very similarly to standard XY anti-aliasing, but here it’s applied al
 - sampling depth of 3.5 (so it samples through three and a half 40um layers when creating a single 40um layer; I usually keep this at sub-layer count minus 0.5)
 - dimming of 40%
 
-These are also the default settings in the script, so I suggest using them as your starting point.
+  These are also the default settings in the script, so I suggest using them as your starting point.
 
 6. When processing finishes, save your file and use it for printing. Your layer exposure, wait times, number of bottom layers, etc. will not be changed.
 
