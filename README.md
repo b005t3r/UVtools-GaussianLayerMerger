@@ -8,7 +8,7 @@ It’s a [UVtools](https://github.com/sn4k3/UVtools) script for processing slice
 It works very similarly to standard XY anti-aliasing, but here it’s applied along the Z-axis - thinner layers are stacked on top of each other and merged into a single thicker layer, while preserving the details of the thin layers. This creates a gradient that fills in the gaps between thicker layers, making them much smoother.
 
 ## How do I use it?
-1. Produce the slices as you normally would (don’t change the settings you usually use for your target layer height) BUT slice at a lower layer height. (e.g., if you normally print at 40um, keep your slicer settings for 40um layers and ONLY change the layer height to, say, 10um).
+1. Produce the slices as you normally would (don’t change the settings you usually use for your target layer height), **BUT slice at a lower layer height**. (e.g., if you normally print at 40um, keep your slicer settings for 40um layers and **ONLY change the layer height to 10um**; your layer height has to be divisble by the sub-layer height).
 
 2. Open your output file in [UVtools](https://github.com/sn4k3/UVtools).
 
