@@ -52,7 +52,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
         Script.Name = "Gaussian Layer Merger";
         Script.Description = "Merges multiple sub-layers into a single printable layer (e.g., slice at 10um and print at 40um while preserving 10um detail)";
         Script.Author = "Łukasz Łazarecki";
-        Script.Version = new Version(1, 0);
+        Script.Version = new Version(1, 1);
         Script.UserInputs.Add(SublayerCount);
         Script.UserInputs.Add(LayerDepth);
         Script.UserInputs.Add(Dimming);
