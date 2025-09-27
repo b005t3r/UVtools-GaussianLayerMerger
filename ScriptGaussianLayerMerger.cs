@@ -44,7 +44,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
         Minimum = 0.1,
         Maximum = 1.0,
         Increment = 0.01,
-        Value = 0.70,
+        Value = 0.40,
     };
     
     public void ScriptInit()
