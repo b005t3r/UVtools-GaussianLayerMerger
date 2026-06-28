@@ -46,16 +46,27 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
         Increment = 0.01,
         Value = 0.40,
     };
+
+    readonly ScriptNumericalInput<double> GreyOffset = new()
+    {
+        Label = "Grey offset (AKA black level)",
+        Unit = "percent",
+        Minimum = 0.0,
+        Maximum = 1.0,
+        Increment = 0.01,
+        Value = 0.04,
+    };
     
     public void ScriptInit()
     {
         Script.Name = "Gaussian Layer Merger";
         Script.Description = "Merges multiple sub-layers into a single printable layer (e.g., slice at 10um and print at 40um while preserving 10um detail)";
         Script.Author = "Łukasz Łazarecki";
-        Script.Version = new Version(1, 1);
+        Script.Version = new Version(1, 2);
         Script.UserInputs.Add(SublayerCount);
         Script.UserInputs.Add(LayerDepth);
         Script.UserInputs.Add(Dimming);
+        Script.UserInputs.Add(GreyOffset);
     }
 
     public string? ScriptValidate()
@@ -106,7 +117,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
             
             Progress.PauseIfRequested();
             
-            ProcessLayerIfEligible(allLayers, cachedMats, i, sublayerCount, gaussianFactors, Dimming.Value);
+            ProcessLayerIfEligible(allLayers, cachedMats, i, sublayerCount, gaussianFactors, Dimming.Value, GreyOffset.Value);
             RemoveLayerIfEligible(allLayers, i, sublayerCount);
 
             Progress.LockAndIncrement();
@@ -135,7 +146,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
         return Math.Exp(-(x * x) / (2.0 * sigma * sigma)) / (Math.Sqrt(2.0 * Math.PI) * sigma);
     }
 
-    private void ProcessLayerIfEligible(List<Layer> layers, List<Mat> cachedMats, int layerIndex, int sublayerCount, List<double> gaussianFactors, double dimming)
+    private void ProcessLayerIfEligible(List<Layer> layers, List<Mat> cachedMats, int layerIndex, int sublayerCount, List<double> gaussianFactors, double dimming, double greyOffset)
     {
         // process only the top layer of each sublayer stack
         if(layerIndex % sublayerCount != sublayerCount - 1)
@@ -144,7 +155,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
         using var mat = layers[layerIndex].LayerMat;
         var original = mat.Clone();     // Keep a original mat copy
 
-        using var mergedTarget = MergeSublayers(layers, cachedMats, layerIndex, sublayerCount, gaussianFactors, dimming);
+        using var mergedTarget = MergeSublayers(layers, cachedMats, layerIndex, sublayerCount, gaussianFactors, dimming, greyOffset);
         using var target = Operation.GetRoiOrDefault(mat);
         mergedTarget.ConvertTo(target, target.Depth);
 
@@ -163,7 +174,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
     }
     
     // this can only be called internally and in the right order - from the top layer to the bottom, only for eligible layers in between
-    private Mat MergeSublayers(List<Layer> layers, List<Mat> cachedMats, int topLayerIndex, int sublayerCount, List<double> gaussianFactors, double dimming)
+    private Mat MergeSublayers(List<Layer> layers, List<Mat> cachedMats, int topLayerIndex, int sublayerCount, List<double> gaussianFactors, double dimming, double greyOffset)
     {
         Mat? merged = null;
         var totalWeight = 0.0;
@@ -217,6 +228,25 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
 
         CvInvoke.Max(baseFloatMat, merged, merged);
 
+        ApplyGreyOffset(merged, greyOffset);
+
         return merged;
+    }
+
+    private void ApplyGreyOffset(Mat mat, double greyOffset)
+    {
+        if(greyOffset <= 0.0)
+            return;
+
+        var lowEnd = Math.Max(1.0, 255.0 * greyOffset);
+        var scale = (255.0 - lowEnd) / 254.0;
+        var shift = lowEnd - scale;
+
+        using var mask = new Mat();
+        using var remapped = new Mat();
+
+        CvInvoke.Compare(mat, new ScalarArray(new MCvScalar(0.0)), mask, CmpType.GreaterThan);
+        CvInvoke.AddWeighted(mat, scale, mat, 0.0, shift, remapped);
+        remapped.CopyTo(mat, mask);
     }
 }
