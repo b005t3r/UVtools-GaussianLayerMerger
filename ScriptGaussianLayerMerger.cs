@@ -34,7 +34,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
         Minimum = 1.0,
         Maximum = 10.0,
         Increment = 0.1,
-        Value = 3.5,
+        Value = 2.5,
     };
 
     readonly ScriptNumericalInput<double> Dimming = new()
@@ -44,7 +44,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
         Minimum = 0.1,
         Maximum = 1.0,
         Increment = 0.01,
-        Value = 0.40,
+        Value = 0.75,
     };
 
     readonly ScriptNumericalInput<double> GreyOffset = new()
@@ -62,7 +62,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
         Script.Name = "Gaussian Layer Merger";
         Script.Description = "Merges multiple sub-layers into a single printable layer (e.g., slice at 10um and print at 40um while preserving 10um detail)";
         Script.Author = "Łukasz Łazarecki";
-        Script.Version = new Version(1, 2);
+        Script.Version = new Version(1, 3);
         Script.UserInputs.Add(SublayerCount);
         Script.UserInputs.Add(LayerDepth);
         Script.UserInputs.Add(Dimming);
