@@ -19,10 +19,11 @@ It works very similarly to standard XY anti-aliasing, but here it’s applied al
 4. In the main menu, select Tools -> Scripting and load the ScriptGaussianLayerMerger.cs file:
 <img width="320" height="168" alt="image" src="https://github.com/user-attachments/assets/4d7d4869-cc98-4f5b-b138-0f89d8fb9e6f" />
 
-5. Set up your parameters. This might require some experimenting, since every printer is different. I got the best results on an Anycubic Mono 4 Ultra with:
-- 4 sub-layers (10um each)
-- sampling depth of 3.5 (so it samples through three and a half 40um layers when creating a single 40um layer; I usually keep this at sub-layer count minus 0.5)
-- dimming of 40%
+5. Set up your parameters. This may require some experimentation, as every printer is different. I achieved the best results on an Anycubic Mono 4 Ultra using:
+- 4 sub-layers (10 um each)
+- A sampling depth of 2.5, meaning it samples through two and a half 40 um layers when creating a single 40 um layer. I usually set this to the sub-layer count minus 0.5-1.5.
+- 75% dimming
+- A grey offset of 4%. This is highly printer-dependent, so you will need to determine the optimal value for your printer.
 
   These are also the default settings in the script, so I suggest using them as your starting point.
 
