@@ -220,7 +220,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
 
             merged ??= EmguExtensions.InitMat(floatMat.Size, new MCvScalar(0.0), 1, DepthType.Cv32F);
             
-            CvInvoke.AddWeighted(merged, 1.0, floatMat, gaussianFactor, 0, merged);
+            CvInvoke.ScaleAdd(floatMat, gaussianFactor, merged, merged);
             totalWeight += gaussianFactor;
         }
         
@@ -246,7 +246,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
         using var remapped = new Mat();
 
         CvInvoke.Compare(mat, new ScalarArray(new MCvScalar(0.0)), mask, CmpType.GreaterThan);
-        CvInvoke.AddWeighted(mat, scale, mat, 0.0, shift, remapped);
+        mat.ConvertTo(remapped, mat.Depth, scale, shift);
         remapped.CopyTo(mat, mask);
     }
 }
