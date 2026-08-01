@@ -153,7 +153,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
             return;
         
         using var mat = layers[layerIndex].LayerMat;
-        var original = mat.Clone();     // Keep a original mat copy
+        using var original = mat.Clone();     // Keep a original mat copy
 
         using var mergedTarget = MergeSublayers(layers, cachedMats, layerIndex, sublayerCount, gaussianFactors, dimming, greyOffset);
         using var target = Operation.GetRoiOrDefault(mat);
@@ -224,7 +224,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
             totalWeight += gaussianFactor;
         }
         
-        merged *= (1 / totalWeight) * dimming;
+        merged.ConvertTo(merged, DepthType.Cv32F, (1 / totalWeight) * dimming, 0);
 
         CvInvoke.Max(baseFloatMat, merged, merged);
 
