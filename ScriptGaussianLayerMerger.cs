@@ -1,4 +1,5 @@
 using Emgu.CV;
+using EmguExtensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -99,7 +100,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
         // add missing empty layers on top of existing layers
         for (int i = 0; i < emptySublayerCount; i++)
         {
-            using var mat = EmguExtensions.InitMat(SlicerFile.Resolution);
+            using var mat = EmguCvExtensions.InitMat(SlicerFile.Resolution);
             mat.SetTo(new MCvScalar(0.0));
             
             var emptyLayer = allLayers.Last().Clone();
@@ -218,7 +219,7 @@ public class ScriptGaussianLayerMerger : ScriptGlobals
             if (i == 0)
                 baseFloatMat = floatMat;
 
-            merged ??= EmguExtensions.InitMat(floatMat.Size, new MCvScalar(0.0), 1, DepthType.Cv32F);
+            merged ??= EmguCvExtensions.InitMat(floatMat.Size, new MCvScalar(0.0), 1, DepthType.Cv32F);
             
             CvInvoke.ScaleAdd(floatMat, gaussianFactor, merged, merged);
             totalWeight += gaussianFactor;
